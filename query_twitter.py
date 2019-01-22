@@ -1,4 +1,4 @@
-from keys import *
+from keys import ACCESS_TOKEN, ACCESS_SECRET, CONSUMER_KEY, CONSUMER_SECRET
 try:
     import json
 except ImportError:
@@ -19,8 +19,11 @@ class StreamListener(tweepy.StreamListener):
         #   Update firebase with this tweets information
         #   - If new tweet: Upload the tweet's text, id_str, hashtags, original url, and any counts
         #   - Else: Update the tweet's information: retweet count, favorite count, reply count (can also play around with the replies)
+        # Twitter object info: https://developer.twitter.com/en/docs/tweets/data-dictionary/overview/tweet-object
         print("\nSTART\n")
         if "RT" in status.text:
+            # This is a retweet so it may be shortened.
+            # Use the retweeted_status object to get the full tweet.
             print("Original tweet:", status.retweeted_status.text)
         else:
             print("Tweet-text:", status.text)
@@ -39,6 +42,9 @@ class StreamListener(tweepy.StreamListener):
         if status_code == 420:
             return False
 
-stream_listener = StreamListener()
-stream = tweepy.Stream(auth=api.auth, listener=stream_listener, tweet_mode='extended')
-stream.filter(track=["NBA"], languages=["en"])
+def main():
+    stream_listener = StreamListener()
+    stream = tweepy.Stream(auth=api.auth, listener=stream_listener, tweet_mode='extended')
+    stream.filter(track=["NBA"], languages=["en"])
+
+main()
