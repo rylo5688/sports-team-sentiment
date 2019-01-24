@@ -69,6 +69,6 @@ def main():
     stream_listener = StreamListener()
     stream_listener.setup(filter_by)
     stream = tweepy.Stream(auth=api.auth, listener=stream_listener, tweet_mode='extended')
-    stream.filter(track=[filter_by], languages=["en"])
+    stream.filter(track=[filter_by, "NFL"], languages=["en"])
 
 main()
